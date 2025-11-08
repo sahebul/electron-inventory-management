@@ -1,15 +1,12 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Prisma Schema for Universal Inventory Management System
+// Supports: Grocery, Medical, Restaurant, Retail, Wholesale, etc.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite" // or "mysql" "sqlite" or "mongodb"
+  provider = "sqlite" // Can switch to "mysql" or "postgresql"
   url      = env("DATABASE_URL")
 }
 

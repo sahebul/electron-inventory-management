@@ -5,7 +5,8 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"cross-env BROWSER=none npm run dev-react\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev_old": "concurrently \"cross-env BROWSER=none npm run dev-react\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev": "concurrently \"cross-env BROWSER=none npm run dev-react\" \"wait-on http://localhost:5173 && nodemon\"",
     "dev-react": "cd src && npm run dev",
     "build": "cd src && npm run build && electron-builder",
     "postinstall": "electron-rebuild"
@@ -23,6 +24,8 @@
     "cross-env": "^10.1.0",
     "electron": "^33.4.11",
     "electron-rebuild": "^3.2.9",
+    "electronmon": "^2.0.4",
+    "nodemon": "^3.1.10",
     "prisma": "^6.18.0",
     "wait-on": "^9.0.1"
   },

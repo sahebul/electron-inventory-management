@@ -1,13 +1,19 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import dotenv from "dotenv";
+import { watch } from 'fs';
 // import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath,pathToFileURL  } from 'url';
 import path, { dirname } from 'path';
 const isDev = !app.isPackaged;
-import { productService } from './src/services/productService.js';
+// import { productService,businessService } from './src/services/productService.js';
+// import { businessService,productService } from './backend/services/dbSerive.js';
+import PrismaErrorHandler  from './backend/errorHandler.js'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, ".env") });
+// let services = null;
+import prisma from './backend/prisma.js';
+
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -32,42 +38,23 @@ function createWindow() {
 }
 
 app.whenReady().then(createWindow);
-
+ 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
+ 
+app.on('before-quit', async () => {
+  // Disconnect Prisma when app closes
+  const { default: prisma } = await import('./backend/db/prisma.js');
+  await prisma.$disconnect();  
+});
+ipcMain.handle('database-operation', async (event, operation, data) => {
+  try {
+    const result = await prisma[operation.model][operation.action](data);
+    return { success: true, data: result };
+  } catch (error) {
+    return PrismaErrorHandler.handle(error);
+  }
+}); 
+ 
 
-// Example SQLite IPC handler
-// // const db = require('./database/db');
-// const db = require(path.join(__dirname, 'database', 'db'));
-
-// ipcMain.handle('get-products', async () => {
-//   return db.getProducts();
-// });
-
-// ipcMain.handle('add-product', async (event, data) => {
-//   return db.addProduct(data);
-// });
-
-
-
-// ipcMain.handle("get-products", async () => {
-//   return await productService.getAll();
-// });
-
-// ipcMain.handle("add-product", async (event, product) => {
-//   return await productService.create(product);
-// });
-
-// ipcMain.handle("update-product", async (event, id, product) => {
-//   return await productService.update(id, product);
-// });
-
-// ipcMain.handle("delete-product", async (event, id) => {
-//   return await productService.delete(id);
-// });
-
-ipcMain.handle("product:add", async (_, data) => productService.create(data));
-ipcMain.handle("product:list", async () => productService.getAll());
-ipcMain.handle("product:delete", async (_, id) => productService.delete(id));
-ipcMain.handle("product:update", async (_, product) => productService.update(product));

@@ -1,0 +1,12 @@
+{
+  "watch": [
+    "main.js",
+    "preload.js",
+    "!src/"
+
+],
+  "ignore": ["node_modules/**/*", "dist/**/*", "src/**/*", "build/**/*"],
+  "ext": "js,json",
+  "exec": "electron .",
+  "delay": "1000"
+}

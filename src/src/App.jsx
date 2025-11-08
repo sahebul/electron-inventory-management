@@ -12,7 +12,7 @@ import LoginPage from "./pages/LoginPage";
 import ProductListPage from "./pages/ProductListPage";
 import AddProduct from "./pages/AddProduct"
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
-import BusinessListPage from "./pages/BusinessListPage";
+import { AppRoutes } from "./routes";
 
 export const ThemeContext = createContext();
 export const AuthContext = createContext();
@@ -59,46 +59,30 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <BrowserRouter>
-            <Routes>
-              {/* guest route */}
+           <AppRoutes />
+            {/* <Routes>
+            
               <Route element={<GuestRoute />}>
                 <Route path="/" element={<LoginPage />} />
               </Route>
-              {/* auth route */}
+            
               <Route element={<ProtectedRoute />}>
                 <Route element={<DashboardLayout />}>
                   <Route path="/products" element={<ProductListPage />}  />
                   <Route path="/add-products" element={<AddProduct />}  />
 
                     <Route path="/business" element={<BusinessListPage />}  />
+                     <Route path="/add-business" element={<AddBusinessPage />}  />
                 </Route>
               </Route>
-              {/* Catch all - redirect to login */}
+         
               <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            </Routes> */}
           </BrowserRouter>
         </ThemeProvider>
       </ThemeContext.Provider>
     </AuthContext.Provider>
   );
-}
-
-function GuestRoute() {
-  const { isAuthenticated } = useContext(AuthContext);
-
-  if (isAuthenticated) {
-    return <Navigate to="/products" replace />;
-  }
-  return <Outlet />;
-}
-
-function ProtectedRoute() {
-  const { isAuthenticated } = useContext(AuthContext);
-
-  if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
-  }
-  return <Outlet />;
 }
 
 export default App;

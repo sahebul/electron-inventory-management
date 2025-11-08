@@ -21,9 +21,9 @@ console.log("items fetch",items)
     // const products = await window.electronAPI.invoke("get-products");
 
     // await window.api.product.add({ name: "Apple", price: 50 });
-const items = await window.api.product.list();
-console.log("items fetch",items)
-    setProducts(items);
+// const items = await window.api.product.list();
+// console.log("items fetch",items)
+    setProducts([]);
   };
 
   useEffect(() => {

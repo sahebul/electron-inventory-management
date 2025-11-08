@@ -7,24 +7,28 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper
+  Paper,
+  TablePagination,
 } from "@mui/material";
+import { useState } from "react";
 
 const BusinessTable = ({ business }) => {
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+    const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to first page
+  };
   return (
    
-        
-    <Box
-      sx={{
-        // p: 3,
-        display: "flex",
-        justifyContent: "center",
-        // bgcolor: "#1d3aacff",
-        minHeight: "100vh",
-      }}
-    >
+      <Paper>
       <TableContainer
-        component={Paper}
+        // component={Paper}
         elevation={3}
         sx={{
           maxWidth: "100%",
@@ -48,16 +52,33 @@ const BusinessTable = ({ business }) => {
                 Name
               </TableCell>
               <TableCell sx={{ fontWeight: "bold", fontSize: "1rem" }}>
-                Price
+                Business Type
               </TableCell>
               <TableCell sx={{ fontWeight: "bold", fontSize: "1rem" }}>
-                Quantity
+                Phone
+              </TableCell>
+               <TableCell sx={{ fontWeight: "bold", fontSize: "1rem" }}>
+                Email
+              </TableCell>
+               <TableCell sx={{ fontWeight: "bold", fontSize: "1rem" }}>
+                Address
+              </TableCell>
+               <TableCell sx={{ fontWeight: "bold", fontSize: "1rem" }}>
+                GST No
+              </TableCell>
+               <TableCell sx={{ fontWeight: "bold", fontSize: "1rem" }}>
+                Currency
+              </TableCell>
+                <TableCell sx={{ fontWeight: "bold", fontSize: "1rem" }}>
+                Tax Enabled
               </TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {business.map((p,index) => (
+            {business
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((p,index) => (
               <TableRow
                 key={p.id}
                 hover
@@ -76,7 +97,25 @@ const BusinessTable = ({ business }) => {
                   {p.name}
                 </TableCell>
                 <TableCell sx={{ fontSize: "0.95rem", color: "text.primary" }}>
-                  ₹{p.price}
+                  ₹{p.businessType}
+                </TableCell>
+                 <TableCell sx={{ fontSize: "0.95rem", color: "text.primary" }}>
+                  ₹{p.phone}
+                </TableCell>
+                 <TableCell sx={{ fontSize: "0.95rem", color: "text.primary" }}>
+                  ₹{p.email}
+                </TableCell>
+                 <TableCell sx={{ fontSize: "0.95rem", color: "text.primary" }}>
+                  ₹{p.address}
+                </TableCell>
+                 <TableCell sx={{ fontSize: "0.95rem", color: "text.primary" }}>
+                  ₹{p.gstNumber}
+                </TableCell>
+                <TableCell sx={{ fontSize: "0.95rem", color: "text.primary" }}>
+                  ₹{p.currency}
+                </TableCell>
+                <TableCell sx={{ fontSize: "0.95rem", color: "text.primary" }}>
+                  ₹{p.taxEnabled}
                 </TableCell>
                 <TableCell
                   sx={{
@@ -85,14 +124,24 @@ const BusinessTable = ({ business }) => {
                     fontWeight: 500,
                   }}
                 >
-                  {p.quantity}
+                  {p.taxEnabled}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </Box>
+
+       <TablePagination
+        component="div"
+        count={business.length}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        rowsPerPageOptions={[5, 10, 25]}
+      />
+</Paper>
   );
 };
 
