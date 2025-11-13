@@ -7,15 +7,20 @@ inventory-app/
 ├── main.js                 ← Electron main process
 ├── preload.js              ← Secure bridge to renderer
 │
-├── src/                    ← React app (frontend)
-│   ├── index.html
-│   ├── index.jsx
-│   ├── App.jsx
-│   ├── components/
-│   └── pages/
+├── prisma/                 ← prisma folder for schema and db (auto generated)
+├── utility/                ← error handlers
+├── config/                 ← configuration files
+├── src/src/                    ← React app (frontend)
+│          ├── index.html
+│          ├── index.jsx
+│          ├── App.jsx
+│          ├── components/
+│          └── pages/
+|          └── routes/
+|
 │
 ├── database/
-│   └── db.js               ← SQLite setup
+│   └── db.js               ← SQLite setup (if not use prisma)
 │
 ├── public/
 │   └── icon.png

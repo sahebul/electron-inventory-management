@@ -1,14 +1,16 @@
-import { Button, Stack } from '@mui/material';
+import { Avatar, Button, IconButton, Stack, useTheme } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem,gridClasses } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
+// import { ImagePreview } from '../UI/ImagePreview';
+import { LogoCell } from '../UI';
 const paginationModel = { page: 0, pageSize: 5 };
 
 export default function DataTableDemo({business,handleDeleteRow}) {
   const navigate=useNavigate()
-    
+  const theme = useTheme();
  const handleRowEdit = (id)=>{
 
   navigate(`/edit-business/${id}`);
@@ -28,11 +30,16 @@ const columns = [
    { field: 'gstNumber', headerName: 'Gst Number', width: 130 },
   {
     field: 'logo',
-    headerName: 'Full name',
+    headerName: 'Business Logo',
     description: 'This column has a value getter and is not sortable.  ',
     sortable: false,
     width: 160,
-    valueGetter: (value, row) => `${row.logo || ''}`,
+    renderCell:(params)=>{
+       return <LogoCell 
+        filePath={params.value} 
+        altText={params.row.name}
+      />
+    }
   },
   {
   field: 'actions--',
@@ -41,7 +48,8 @@ const columns = [
   width: 100,
   getActions: (params) => [
     <GridActionsCellItem
-      icon={<EditIcon />}
+      icon={ <EditIcon />
+    }
       label="Edit"
       color="primary" 
       onClick={() => handleRowEdit(params.id)}
@@ -101,15 +109,94 @@ const columns = [
 ];
 
   return (
-    <Paper sx={{ height: 400, width: '100%' }}>
+    <Paper 
+    
+    // sx={{ height: 400, width: '100%' }}
+     elevation={0}
+    sx={{
+          height: 400,
+          width: "100%",
+          borderRadius: 3,
+          overflow: "hidden",
+          border: `1px solid ${theme.palette.divider}`,
+          backgroundColor: theme.palette.background.paper,
+        }}
+        
+    >
       <DataGrid 
         rows={business}
         columns={columns}
+        //  sortingMode="server"
+        //     filterMode="server"
+        //     paginationMode="server"
+            //  paginationModel={paginationModel}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}
+        showToolbar
         getRowId={(row) => row.id}
         // checkboxSelection
-        sx={{ border: 0 }}
+        // sx={{ border: 0 }}
+        // sx={{
+        //       [`& .${gridClasses.columnHeader}, & .${gridClasses.cell}`]: {
+        //         outline: 'transparent',
+        //       },
+        //       [`& .${gridClasses.columnHeader}:focus-within, & .${gridClasses.cell}:focus-within`]:
+        //         {
+        //           outline: 'none',
+        //         },
+        //       [`& .${gridClasses.row}:hover`]: {
+        //         cursor: 'pointer',
+        //       },
+        //     }}
+
+          disableRowSelectionOnClick
+   sx={{
+            border: "none",
+            color: theme.palette.text.primary,
+            backgroundColor: theme.palette.background.paper,
+
+            // Header
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? theme.palette.background.default
+                  : "#f9fafb",
+              borderBottom: `1px solid ${theme.palette.divider}`,
+              fontWeight: 600,
+            },
+
+            // Rows
+            "& .MuiDataGrid-row": {
+              borderBottom: `1px solid ${theme.palette.divider}`,
+            },
+            "& .MuiDataGrid-row:hover": {
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? "rgba(255,255,255,0.05)"
+                  : "#f9fafb",
+              cursor: "pointer",
+            },
+
+            // Cells
+            "& .MuiDataGrid-cell": {
+              border: "none",
+            },
+
+            // Footer
+            "& .MuiDataGrid-footerContainer": {
+              borderTop: `1px solid ${theme.palette.divider}`,
+              backgroundColor: theme.palette.background.paper,
+            },
+          }}
+    slotProps={{
+              loadingOverlay: {
+                variant: 'circular-progress',
+                noRowsVariant: 'circular-progress',
+              },
+              baseIconButton: {
+                size: 'small',
+              },
+            }}
       />
     </Paper>
   );

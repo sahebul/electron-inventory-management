@@ -2,7 +2,16 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('db', {
   execute: (operation, data) => 
-    ipcRenderer.invoke('database-operation', operation, data)
+    ipcRenderer.invoke('database-operation', operation, data),
+});
+
+contextBridge.exposeInMainWorld('fileAPI', {
+  select: (options) => ipcRenderer.invoke('file:select', options),
+  upload: (sourcePath, options) => ipcRenderer.invoke('file:upload', sourcePath, options),
+  uploadBase64: (base64Data, fileName, options) => 
+    ipcRenderer.invoke('file:upload-base64', base64Data, fileName, options),
+  delete: (relativePath) => ipcRenderer.invoke('file:delete', relativePath),
+  getBase64: (relativePath) => ipcRenderer.invoke('file:get-base64', relativePath),
 });
 
 

@@ -13,6 +13,7 @@ import ProductListPage from "./pages/ProductListPage";
 import AddProduct from "./pages/AddProduct"
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { AppRoutes } from "./routes";
+import { DialogProvider } from "./hooks/useDialogs";
 
 export const ThemeContext = createContext();
 export const AuthContext = createContext();
@@ -59,7 +60,10 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <BrowserRouter>
-           <AppRoutes />
+          <DialogProvider >
+              <AppRoutes />
+          </DialogProvider>
+           
             {/* <Routes>
             
               <Route element={<GuestRoute />}>

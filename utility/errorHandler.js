@@ -1,7 +1,22 @@
 // errorHandler.js
 import { Prisma } from '@prisma/client';
+import { z } from 'zod'
 class PrismaErrorHandler {
   static handle(error) {
+
+    // Safety check for ZodError (shouldn't reach here, but just in case)
+    if (error instanceof z.ZodError) {
+      console.error('ZodError in Prisma handler (should not happen):', error)
+      return {
+        success: false,
+        error: {
+          type: 'VALIDATION_ERROR',
+          message: 'Validation failed',
+          details: error.errors
+        }
+      }
+    }
+
     // Handle Prisma Validation Errors (missing/invalid fields)
     if (error instanceof Prisma.PrismaClientValidationError) {
       return this.handleValidationError(error);
@@ -12,6 +27,7 @@ class PrismaErrorHandler {
       return this.handleKnownRequestError(error);
     }
     
+    console.log("error from other",error)
     // Handle unknown errors
     return {
       success: false,

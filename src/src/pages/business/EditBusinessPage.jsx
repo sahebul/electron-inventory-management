@@ -32,12 +32,14 @@ const EditBusinessPage = () => {
         values: result.data,
       });
     }
-    console.log("recods of edit", result);
   };
 
   function resetForm() {
-    setFormState(INITIAL_VALUES);
-    navigate(-1);
+    setTimeout(()=>{
+      setFormState(INITIAL_VALUES);
+      navigate(-1);
+    },1000)
+  
   }
   function handleFormFieldChange(e) {
     setFormState({
@@ -51,7 +53,6 @@ const EditBusinessPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submit edit handle", formState.values);
     setIsSubmitting(true);
 
     const result = await window.db.execute(
@@ -64,7 +65,6 @@ const EditBusinessPage = () => {
     setIsSubmitting(false);
     if (!result.success) {
       setFormState({ ...formState, errors: result.data });
-      console.log(result);
     } else {
       setAlert({
         open: true,
