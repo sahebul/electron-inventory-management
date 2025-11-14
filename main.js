@@ -57,7 +57,7 @@ ipcMain.handle('database-operation', async (event, operation, data) => {
      
      // Synchronous validation - no await needed
     const validation = validateOperation(operation, data, validationRegistry)
-     
+       
     // Check validation result
     if (!validation.isValid) {
       return {
@@ -69,14 +69,13 @@ ipcMain.handle('database-operation', async (event, operation, data) => {
         }, 
         data: validation.data || []
       } 
-    }
+    } 
      
- 
     // const result = await prisma[operation.model][operation.action](data);
      const result = await prisma[operation.model][operation.action](validation.data)
     return { success: true, data: result };
   } catch (error) {
- 
+    
     return PrismaErrorHandler.handle(error);
   }
 });  

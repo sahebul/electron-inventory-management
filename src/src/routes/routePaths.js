@@ -5,4 +5,8 @@ export const ROUTES = {
   BUSINESS: '/business',
   ADD_BUSINESS: '/add-business',
   EDIT_BUSINESS: '/edit-business/:id',
+
+  USERS: '/users',
+  ADD_USER: '/add-user',
+  EDIT_USER: '/edit-user/:id',
 };

@@ -2,7 +2,8 @@
   "watch": [
     "main.js",
     "preload.js",
-    "!src/"
+    "!src/",
+    "middleWare/"
 
 ],
   "ignore": ["node_modules/**/*", "dist/**/*", "src/**/*", "build/**/*"],

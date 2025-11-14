@@ -27,7 +27,7 @@ class PrismaErrorHandler {
       return this.handleKnownRequestError(error);
     }
     
-    console.log("error from other",error)
+    // console.log("error from other",error)
     // Handle unknown errors
     return {
       success: false,

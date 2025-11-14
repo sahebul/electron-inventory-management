@@ -1,9 +1,8 @@
-import { useState } from "react";
-import PageContainer from "../../components/PageContainer";
-import { BusinessForm } from "../../components/forms";
 import CustomAlert from "../../components/CustomAlert";
-
-const AddBusinessPage = () => {
+import UserForm from "../../components/forms/UserForm";
+import PageContainer from "../../components/PageContainer";
+import { useState,useEffect} from "react";
+const AddUserPage = () => {
   const INITIAL_VALUES = {
     values: {},
     errors: {},
@@ -16,25 +15,9 @@ const AddBusinessPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formState, setFormState] = useState(INITIAL_VALUES);
 
-  
-
-
-
-  function resetForm() {
-    setFormState(INITIAL_VALUES);
-  }
-
- 
-  
-const handleFileChange = (file_path) => {
-  setFormState({
-      ...formState,
-      values: {
-        ...formState.values,
-        logo: file_path,
-      },
-    });
-};
+  const handleCloseAlert = () => {
+    setAlert((prev) => ({ ...prev, open: false }));
+  };
   function handleFormFieldChange(e) {
     setFormState({
       ...formState,
@@ -44,9 +27,17 @@ const handleFileChange = (file_path) => {
       },
     });
   }
+  const handleReset = () => {
+    setFormState(INITIAL_VALUES);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submit handle", formState.values);
+    if (formState.values.logo) {
+      try {
+        const upload = await window.db.uploadFile(formState.values.logo);
+      } catch (error) {}
+    }
 
     setIsSubmitting(true);
     const result = await window.db.execute(
@@ -67,24 +58,13 @@ const handleFileChange = (file_path) => {
     }
   };
 
-  const handleCloseAlert = () => {
-    setAlert((prev) => ({ ...prev, open: false }));
-  };
-
-  function handleReset() {
-    console.log("reset");
-  }
-
-
-   
-
   return (
     <PageContainer
-      title="New Business"
-      breadcrumbs={[{ title: "Business", path: "/business" }, { title: "New" }]}
+      title="New Users"
+      breadcrumbs={[{ title: "Users", path: "/users" }, { title: "New" }]}
     >
       <CustomAlert alert={alert} onClose={handleCloseAlert} />
-      <BusinessForm
+      <UserForm
         formState={formState}
         handleFormFieldChange={handleFormFieldChange}
         handleFileChange={handleFileChange}
@@ -96,5 +76,4 @@ const handleFileChange = (file_path) => {
     </PageContainer>
   );
 };
-
-export default AddBusinessPage;
+export default AddUserPage;

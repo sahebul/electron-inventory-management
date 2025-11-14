@@ -22,7 +22,7 @@ export function validateOperation(operation, data, validationRegistry) {
   if (!schema) {
       console.log('No schema found, skipping validation')
     return { isValid: true, data: data || {} }
-  }
+  } 
 
 
    // Verify it's actually a Zod schema
@@ -42,7 +42,6 @@ export function validateOperation(operation, data, validationRegistry) {
   const result = schema.safeParse(data);
 
 if (!result.success) {
-  // console.log(result.error.issues); // array of ZodIssue objects
 
    const formatted = Object.fromEntries(
     result.error.issues.map(err => {
@@ -56,7 +55,6 @@ if (!result.success) {
     data:formatted
   }
 } else {
-  // console.log(result.data); // validated form data
   return { isValid: true, data: result.data }
   
 }

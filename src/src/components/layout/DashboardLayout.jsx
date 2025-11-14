@@ -141,6 +141,7 @@ const DashboardLayout = () => {
             { text: "Home", icon: <HomeIcon />,path:"/" },
             { text: "Dashboard", icon: <DashboardIcon />,path:"/products"  },
             { text: "Business", icon: <DashboardIcon />,path:"/business"  },
+            { text: "Users", icon: <DashboardIcon />,path:"/users"  },
             { text: "Settings", icon: <SettingsIcon />,path:"/add-products"  }
           ].map((item, index) => (
             <ListItem key={item.text} disablePadding>
